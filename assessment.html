@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Tool | The Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="data:,">
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 sm:p-8 max-w-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Find the Right Tool</h1>
+            <p class="text-gray-600 mt-2">Answer a few questions and we'll recommend the best starting point in the ecosystem for you.</p>
+        </div>
+
+        <div id="assessment-wizard-container" class="bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+            <!-- The assessment wizard will be rendered here by assessment.js -->
+            <div class="text-center">
+                <p class="text-gray-500">Loading assessment...</p>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center text-sm">
+            <a href="index.html" class="text-blue-600 hover:underline">&larr; Back to Login</a>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/assessment.js"></script>
+
+</body>
+</html>
