@@ -32,7 +32,10 @@ let isSignUp = false;
 const showMessage = (message, isError = false) => {
     if (!messageArea) return;
     messageArea.textContent = message;
-    messageArea.className = `text-center p-3 my-4 rounded-md text-sm ${isError ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}`;
+    // Use different colors for different message types
+    let bgColor = isError ? 'bg-red-100' : 'bg-blue-100';
+    let textColor = isError ? 'text-red-700' : 'text-blue-700';
+    messageArea.className = `text-center p-3 my-4 rounded-md text-sm ${bgColor} ${textColor}`;
 };
 
 const setButtonsDisabled = (disabled) => {
@@ -82,7 +85,7 @@ const toggleFormMode = () => {
 if (authForm) {
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        showMessage("Authenticating, please wait...", false);
+        showMessage("Authenticating, please wait...", false); // Text feedback
         setButtonsDisabled(true);
         
         const email = document.getElementById('email').value;
@@ -102,7 +105,7 @@ if (authForm) {
                 await handleAuthSuccess(userCredential);
             }
         } catch (error) {
-            let friendlyMessage = error.message; // Default to Firebase message
+            let friendlyMessage = error.message;
             if (error.code) {
                 switch (error.code) {
                     case 'auth/invalid-credential': friendlyMessage = "Invalid email or password. Please try again."; break;
@@ -124,7 +127,7 @@ if (formToggleLink) {
 }
 
 const socialSignIn = async (provider) => {
-    showMessage("Connecting to provider...", false);
+    showMessage("Connecting to provider...", false); // Text feedback
     setButtonsDisabled(true);
     try {
         const result = await signInWithPopup(auth, provider);
@@ -142,7 +145,7 @@ if (googleBtn) {
 
 if (anonBtn) {
     anonBtn.addEventListener('click', async () => {
-        showMessage("Signing in as guest...", false);
+        showMessage("Signing in as guest...", false); // Text feedback
         setButtonsDisabled(true);
         try {
             const userCredential = await signInAnonymously(auth);
