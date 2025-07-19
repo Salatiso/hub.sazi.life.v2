@@ -20,20 +20,13 @@ const loadComponent = async (componentName, placeholderId) => {
         return;
     }
 
-    // Determine the correct base path to the root of the project.
-    // This logic checks if the current page is in a subdirectory of /modules/
-    // (e.g., /modules/finhelp/index.html) or at the top level (/modules/index-modules.html).
-    const pathSegments = window.location.pathname.split('/');
-    const modulesIndex = pathSegments.indexOf('modules');
-    
-    // Default path for pages directly inside /modules/ (e.g., index-modules.html)
-    let basePath = '../'; 
-
-    // If the page is deeper than /modules/ (e.g., /modules/finhelp/), adjust the path
-    if (modulesIndex !== -1 && pathSegments.length > modulesIndex + 2) {
-        const depth = pathSegments.length - (modulesIndex + 2);
-        basePath = '../'.repeat(depth + 1);
-    }
+    // CORRECTED LOGIC: This is a more robust way to calculate the path.
+    // It determines how many directories deep the current page is from the project root
+    // and creates the correct number of '../' to navigate back to the root.
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+    // The file name (e.g., 'index-modules.html') is the last segment. We subtract it to get the directory depth.
+    const depth = pathSegments.length - 1;
+    const basePath = '../'.repeat(depth);
     
     const componentUrl = `${basePath}components/${componentName}.html`;
     console.log(`Attempting to load component from: ${componentUrl}`);
@@ -41,7 +34,8 @@ const loadComponent = async (componentName, placeholderId) => {
     try {
         const response = await fetch(componentUrl);
         if (!response.ok) {
-            throw new Error(`Network response was not ok. Status: ${response.status}`);
+            // Added the URL to the error for easier debugging.
+            throw new Error(`Network response was not ok. Status: ${response.status} for ${componentUrl}`);
         }
         const data = await response.text();
         placeholder.innerHTML = data;
@@ -118,15 +112,13 @@ const initializeEventListeners = () => {
         }
     });
 
-    // Make sure sidebar links are correct relative to the root
-    const sidebarLinks = document.querySelectorAll('#sidebar-placeholder a');
-    sidebarLinks.forEach(link => {
-        const href = link.getAttribute('href');
-        if (href && !href.startsWith('http') && !href.startsWith('/')) {
-            // This is a simple fix assuming all module links are from the root
-            link.setAttribute('href', `/${href}`);
-        }
-    });
+    // ADDED FIX: The "Overview" link in the sidebar component points to the wrong URL.
+    // This code corrects the link's href attribute after the sidebar has been loaded.
+    const overviewLink = document.querySelector('#sidebar-placeholder a[href="/index-modules.html"]');
+    if (overviewLink) {
+        overviewLink.href = '/modules/index-modules.html';
+        console.log("Corrected Overview link href to /modules/index-modules.html");
+    }
 };
 
 // --- Main Execution Flow ---
