@@ -1,9 +1,17 @@
 <!-- hub.sazi.life.v2/components/sidebar.html -->
 <div class="p-4 flex flex-col h-full">
-    <!-- Logo -->
-    <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-gray-800">The Hub</h1>
-        <p class="text-sm text-gray-500">by Salatiso</p>
+    <!-- Logo & Branding Block -->
+    <div class="text-center mb-8 pt-4">
+        <h1 class="text-2xl font-bold text-gray-800 font-poppins">The Hub</h1>
+        <a href="https://salatiso.com" target="_blank" class="inline-block group mt-2">
+            <svg viewBox="0 0 100 100" class="h-16 w-16 mx-auto text-slate-800 group-hover:text-blue-600 transition-colors">
+                <circle cx="50" cy="50" r="40" stroke="currentColor" stroke-width="8" fill="none"/>
+                <path d="M50 10 L 50 90 M10 50 L 90 50" stroke="#4b5563" stroke-width="2"/>
+                <path d="M50 10 L 40 25 L 60 25 Z" fill="currentColor"/>
+            </svg>
+        </a>
+        <p class="text-gray-600 text-sm mt-2">by Salatiso</p>
+        <p class="text-gray-500 text-xs mt-4 font-semibold italic">Your digital homestead</p>
     </div>
 
     <!-- Navigation -->
@@ -32,7 +40,6 @@
             <i class="fas fa-book-open w-6 text-center"></i>
             <span class="ml-3">Publications</span>
         </a>
-        <!-- *** NEW QUIZ LINK *** -->
         <a href="/quiz.html" class="flex items-center px-4 py-2 text-gray-700 rounded-lg hover:bg-gray-100">
             <i class="fas fa-brain w-6 text-center"></i>
             <span class="ml-3">Holistic Quiz</span>
