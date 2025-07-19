@@ -1,0 +1,48 @@
+/* hub.sazi.life.v2/assets/css/quiz.css */
+
+#quiz-container {
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.quiz-progress-bar {
+    width: 100%;
+    background-color: #e5e7eb; /* gray-200 */
+    height: 8px;
+}
+
+.quiz-progress-fill {
+    height: 100%;
+    background-color: #3b82f6; /* blue-500 */
+    transition: width 0.3s ease-in-out;
+}
+
+.quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    background-color: #f3f4f6; /* gray-100 */
+    border: 2px solid transparent;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.quiz-option:hover {
+    border-color: #3b82f6; /* blue-500 */
+    background-color: #dbeafe; /* blue-100 */
+}
+
+.quiz-option.selected {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    font-weight: 600;
+}
+
+.achievement-card {
+    border-left: 5px solid #10b981; /* emerald-500 */
+    background-color: #f0fdf4; /* emerald-50 */
+}

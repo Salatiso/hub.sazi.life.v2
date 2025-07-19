@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holistic Quiz | The Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/quiz.css">
+    <link rel="icon" href="data:,">
+</head>
+<body class="bg-gray-100">
+
+    <div id="app-container">
+        <!-- Sidebar will be loaded here by modules.js -->
+        <div id="sidebar-placeholder"></div>
+
+        <div class="main-content-wrapper">
+            <!-- Header will be loaded here by modules.js -->
+            <div id="header-placeholder"></div>
+
+            <!-- Main content area for the quiz -->
+            <main class="content-area">
+                <div id="quiz-container" class="max-w-4xl mx-auto">
+                    <!-- Quiz engine will render content here -->
+                    <div class="text-center p-8">
+                        <div class="spinner"></div>
+                        <p class="mt-4 text-gray-600">Loading Quiz...</p>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer will be loaded here by modules.js -->
+            <div id="footer-placeholder"></div>
+        </div>
+    </div>
+
+    <!-- Load the main dashboard engine first to handle auth and components -->
+    <script type="module" src="assets/js/modules.js"></script>
+    <!-- Then load the quiz engine -->
+    <script type="module" src="assets/js/quiz.js"></script>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/login.css">
-    <link rel="icon" href="data:,"> <!-- Prevents favicon 404 error -->
+    <link rel="icon" href="data:,">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;900&family=Manrope:wght@400;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,17 +15,16 @@
         .salatiso-logo-svg { width: 80px; height: auto; margin-bottom: 1rem; }
         .ecosystem-link { font-family: 'Roboto Slab', serif; font-weight: 700; text-decoration: none; transition: all 0.2s ease-in-out; }
         .ecosystem-link:hover { transform: scale(1.05); }
-        .help-brand-accent { color: #3b82f6; /* blue-600 */ }
+        .help-brand-accent { color: #3b82f6; }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <!-- Loading Overlay for user feedback -->
     <div id="loading-overlay" class="hidden">
         <div class="spinner"></div>
     </div>
 
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+    <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 space-y-6">
         
         <div class="text-center">
             <h1 class="text-3xl font-bold text-gray-800 font-poppins">The Hub</h1>
@@ -39,54 +38,56 @@
             <p class="text-gray-500 text-sm">by Salatiso</p>
         </div>
 
-        <!-- Message area for errors or success notifications -->
-        <div id="message-area" class="mb-4"></div>
-
-        <form id="auth-form" class="space-y-6">
-            <h2 id="form-title" class="text-xl font-semibold text-center text-gray-700">Your Digital Homestead</h2>
-            
-            <div id="name-container" class="hidden">
-                <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
-                <input type="text" id="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            </div>
-            
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-600">Email Address</label>
-                <input type="email" id="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
-                <input type="password" id="password" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
-            <div id="confirm-password-container" class="hidden">
-                <label for="confirm-password" class="block text-sm font-medium text-gray-600">Confirm Password</label>
-                <input type="password" id="confirm-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-            </div>
-
-            <button id="submit-button" type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                Sign In
-            </button>
-        </form>
-
-        <div class="text-center text-sm">
-            <a href="#" id="form-toggle-link" class="text-blue-600 hover:underline">Don't have an account? Sign Up</a>
+        <!-- Placeholder for Theme and Language Switchers -->
+        <div class="flex justify-center gap-4" id="switchers-placeholder">
+            <!-- Components will be loaded here -->
         </div>
 
-        <div class="relative">
-            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div>
-            <div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-500">Or continue with</span></div>
-        </div>
+        <!-- Tabbed Interface for Login / Assessment -->
+        <div id="auth-assessment-tabs">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex justify-center space-x-8" aria-label="Tabs">
+                    <button class="tab-btn active" data-tab="login">Login / Sign Up</button>
+                    <button class="tab-btn" data-tab="assessment">Find Your Tool</button>
+                </nav>
+            </div>
 
-        <div class="grid grid-cols-1 gap-4">
-             <button id="google-signin-btn" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                <img class="w-5 h-5 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google icon">
-                Sign in with Google
-            </button>
-            <button id="anonymous-signin-btn" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                Continue as Guest
-            </button>
+            <div id="login-tab-content" class="tab-content active">
+                <div id="message-area" class="my-4"></div>
+                <form id="auth-form" class="space-y-6 mt-6">
+                    <h2 id="form-title" class="text-xl font-semibold text-center text-gray-700">Your Digital Homestead</h2>
+                    <div id="name-container" class="hidden">
+                        <label for="name" class="block text-sm font-medium text-gray-600">Full Name</label>
+                        <input type="text" id="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-600">Email Address</label>
+                        <input type="email" id="email" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                        <input type="password" id="password" required class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div id="confirm-password-container" class="hidden">
+                        <label for="confirm-password" class="block text-sm font-medium text-gray-600">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <button id="submit-button" type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">Sign In</button>
+                </form>
+                <div class="text-center text-sm mt-4">
+                    <a href="#" id="form-toggle-link" class="text-blue-600 hover:underline">Don't have an account? Sign Up</a>
+                </div>
+                <div class="relative my-6"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div><div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-500">Or continue with</span></div></div>
+                <div class="grid grid-cols-1 gap-4">
+                     <button id="google-signin-btn" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"><img class="w-5 h-5 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google icon">Sign in with Google</button>
+                    <button id="anonymous-signin-btn" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Continue as Guest</button>
+                </div>
+            </div>
+
+            <div id="assessment-tab-content" class="tab-content">
+                <!-- Assessment Component will be loaded here -->
+                <div id="assessment-placeholder"></div>
+            </div>
         </div>
 
         <!-- Ecosystem Links -->
@@ -122,7 +123,7 @@
         </div>
     </div>
 
-    <!-- Import scripts as modules -->
+    <script type="module" src="assets/js/main.js"></script>
     <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
