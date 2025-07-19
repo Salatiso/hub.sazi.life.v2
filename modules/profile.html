@@ -3,57 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - The Hub</title>
-    <!-- Corrected relative path -->
-    <link rel="stylesheet" href="../assets/css/dashboard-styles.css">
+    <title>My Profile | The Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/modules.css">
+    <link rel="icon" href="data:,">
 </head>
-<body class="theme-default">
-    <!-- Standard App Container -->
-    <div id="app-container" class="flex h-screen bg-main text-primary">
+<body>
 
-        <!-- Sidebar Placeholder -->
+    <div id="app-container">
+        <!-- The sidebar component will be loaded here by modules.js -->
         <div id="sidebar-placeholder"></div>
 
-        <div class="flex-1 flex flex-col">
-            <!-- Header Placeholder -->
+        <div class="main-content-wrapper">
+            <!-- The header component will be loaded here by modules.js -->
             <div id="header-placeholder"></div>
 
-            <!-- Main Content Area -->
-            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-                <!-- Original page content starts here -->
-                <header class="mb-8">
-                    <h1 class="text-3xl font-bold font-poppins">My Profile</h1>
-                    <p class="text-secondary">Manage your personal information for The Hub.</p>
-                </header>
-
-                <div class="card p-6 rounded-xl shadow-lg max-w-2xl mx-auto">
-                    <form id="profile-form" class="space-y-4">
-                        <div>
-                            <label for="profile-name" class="block text-sm font-medium text-secondary">Full Name</label>
-                            <input type="text" id="profile-name" class="input-field w-full mt-1">
-                        </div>
-                        <div>
-                            <label for="profile-email" class="block text-sm font-medium text-secondary">Email Address</label>
-                            <input type="email" id="profile-email" class="input-field w-full mt-1" disabled>
-                             <p class="text-xs text-secondary mt-1">Email cannot be changed.</p>
-                        </div>
-                        <!-- Add other profile fields here -->
-                        <div class="flex justify-end pt-4">
-                            <button type="submit" class="btn-primary">Save Profile</button>
-                        </div>
-                    </form>
+            <!-- Main content for the profile page -->
+            <main class="content-area">
+                <h1 class="text-3xl font-bold text-gray-800">My Profile</h1>
+                <p class="mt-2 text-gray-600">Manage your personal information and settings.</p>
+                
+                <div class="mt-8 bg-white p-6 rounded-lg shadow">
+                    <!-- Profile content will be added here in a future step -->
+                    <p>Profile details and forms will be built here.</p>
                 </div>
-                <!-- Original page content ends here -->
             </main>
 
-            <!-- Footer Placeholder -->
+            <!-- The footer component will be loaded here by modules.js -->
             <div id="footer-placeholder"></div>
         </div>
     </div>
-    
-    <!-- Corrected relative path -->
-    <script type="module" src="../assets/js/dashboard.js"></script>
+
+    <!-- The Modules Engine script, which protects this page and loads components -->
+    <script type="module" src="../assets/js/modules.js"></script>
+
 </body>
 </html>
