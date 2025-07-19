@@ -32,7 +32,6 @@ let isSignUp = false;
 const showMessage = (message, isError = false) => {
     if (!messageArea) return;
     messageArea.textContent = message;
-    // Use different colors for different message types
     let bgColor = isError ? 'bg-red-100' : 'bg-blue-100';
     let textColor = isError ? 'text-red-700' : 'text-blue-700';
     messageArea.className = `text-center p-3 my-4 rounded-md text-sm ${bgColor} ${textColor}`;
@@ -42,7 +41,6 @@ const setButtonsDisabled = (disabled) => {
     if (submitButton) submitButton.disabled = disabled;
     if (googleBtn) googleBtn.disabled = disabled;
     if (anonBtn) anonBtn.disabled = disabled;
-
     if (disabled) {
         submitButton?.classList.add('opacity-50', 'cursor-not-allowed');
     } else {
@@ -64,7 +62,8 @@ const handleAuthSuccess = async (userCredential) => {
     }
     showMessage("Success! Redirecting to your dashboard...", false);
     setTimeout(() => {
-        window.location.href = 'index-modules.html';
+        // *** THIS IS THE ONLY LINE THAT NEEDS TO CHANGE ***
+        window.location.href = 'modules/index-modules.html';
     }, 1500);
 };
 
@@ -85,7 +84,7 @@ const toggleFormMode = () => {
 if (authForm) {
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        showMessage("Authenticating, please wait...", false); // Text feedback
+        showMessage("Authenticating, please wait...", false);
         setButtonsDisabled(true);
         
         const email = document.getElementById('email').value;
@@ -127,7 +126,7 @@ if (formToggleLink) {
 }
 
 const socialSignIn = async (provider) => {
-    showMessage("Connecting to provider...", false); // Text feedback
+    showMessage("Connecting to provider...", false);
     setButtonsDisabled(true);
     try {
         const result = await signInWithPopup(auth, provider);
@@ -145,7 +144,7 @@ if (googleBtn) {
 
 if (anonBtn) {
     anonBtn.addEventListener('click', async () => {
-        showMessage("Signing in as guest...", false); // Text feedback
+        showMessage("Signing in as guest...", false);
         setButtonsDisabled(true);
         try {
             const userCredential = await signInAnonymously(auth);
