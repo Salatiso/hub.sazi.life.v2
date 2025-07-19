@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to The Hub | Salatiso</title>
+    <title>Login | The Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/login.css">
@@ -65,10 +65,11 @@
             <a href="#" id="form-toggle-link" class="text-blue-600 hover:underline">Don't have an account? Sign Up</a>
         </div>
 
-        <div class="relative"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div><div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-500">Or</span></div></div>
+        <div class="relative"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-300"></div></div><div class="relative flex justify-center text-sm"><span class="px-2 bg-white text-gray-500">Or continue with</span></div></div>
 
-        <div class="text-center">
-             <a href="assessment.html" class="font-medium text-blue-600 hover:text-blue-500">Not sure where to start? Find your tool &rarr;</a>
+        <div class="grid grid-cols-1 gap-4">
+            <button id="google-signin-btn" class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"><img class="w-5 h-5 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google icon">Sign in with Google</button>
+            <button id="anonymous-signin-btn" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">Continue as Guest</button>
         </div>
 
         <!-- Ecosystem Links -->
@@ -94,16 +95,13 @@
                 <a href="https://salatiso.com/lifesync/" target="_blank" class="ecosystem-link text-emerald-600">LifeSync</a>
             </div>
         </div>
-
+        
         <div class="mt-6 text-center text-sm text-gray-500 space-x-4">
-            <a href="about.html" class="hover:underline">About</a>
-            <span>&bull;</span>
-            <a href="#" class="hover:underline">Contact</a>
-            <span>&bull;</span>
-            <a href="#" class="hover:underline">Privacy</a>
+            <a href="index.html" class="hover:underline">&larr; Back to Home</a>
         </div>
     </div>
 
+    <!-- Firebase scripts are ONLY loaded on this page -->
     <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
