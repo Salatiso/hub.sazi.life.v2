@@ -1,13 +1,21 @@
-// hub.sazi.life/assets/js/main.js
+// hub.sazi.life.v2/assets/js/main.js
 
 document.addEventListener("DOMContentLoaded", function() {
 
     /**
-     * Fetches HTML content from a file and injects it into a placeholder element.
-     * @param {string} componentPath - The path to the HTML component file.
-     * @param {string} placeholderId - The ID of the element to inject the content into.
+     * Fetches an HTML component and loads it into a specified placeholder.
+     * It now checks if the placeholder exists before fetching, preventing errors.
+     * @param {string} componentPath - The path to the component's HTML file.
+     * @param {string} placeholderId - The ID of the element to inject the HTML into.
      */
     const loadComponent = (componentPath, placeholderId) => {
+        const placeholder = document.getElementById(placeholderId);
+        if (!placeholder) {
+            // This is now expected on pages that don't have this placeholder.
+            // console.log(`Placeholder '${placeholderId}' not found on this page. Skipping component load.`);
+            return;
+        }
+
         fetch(componentPath)
             .then(response => {
                 if (!response.ok) {
@@ -16,76 +24,59 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.text();
             })
             .then(data => {
-                const placeholder = document.getElementById(placeholderId);
-                if (placeholder) {
-                    placeholder.innerHTML = data;
-                } else {
-                    console.error(`Placeholder with ID '${placeholderId}' not found.`);
-                }
+                placeholder.innerHTML = data;
             })
             .catch(error => console.error('Error loading component:', error));
     };
 
-    /**
-     * Loads all the page components into their respective placeholders.
-     */
-    const loadAllComponents = () => {
-        loadComponent('components/header.html', 'header-placeholder');
-        loadComponent('components/sidebar-tools.html', 'sidebar-tools-placeholder');
-        loadComponent('components/main-landing.html', 'main-landing-placeholder');
-        loadComponent('components/sidebar-milestones.html', 'sidebar-milestones-placeholder');
-    };
+    // --- Component Loading ---
+    // These will now only run if their respective placeholders are on the current page.
+    loadComponent('components/assessment.html', 'assessment-placeholder');
+    // Add future public components here, e.g., loadComponent('components/theme-switcher.html', 'switchers-placeholder');
 
-    /**
-     * Sets up the infinitely scrolling sidebar by cloning its items.
-     * This needs to be run after the component is loaded.
-     * @param {string} listId - The ID of the list element to set up for scrolling.
-     */
-    const setupScrollingSidebar = (listId) => {
-        const listElement = document.getElementById(listId);
-        if (!listElement || listElement.children.length === 0) return;
 
-        // Clone items to create a seamless loop
-        const originalItems = Array.from(listElement.children);
-        originalItems.forEach(item => {
-            const clone = item.cloneNode(true);
-            listElement.appendChild(clone);
+    // --- Tab Switching Logic for the Login Page ---
+    const tabsContainer = document.getElementById('auth-assessment-tabs');
+    if (tabsContainer) {
+        const tabButtons = tabsContainer.querySelectorAll('.tab-btn');
+        const tabContents = tabsContainer.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tab = button.dataset.tab;
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `${tab}-tab-content`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
         });
-    };
 
-    // Use a MutationObserver to wait for the sidebar to be loaded before setting up the scroll.
-    // This is more reliable than a simple timer.
-    const observer = new MutationObserver((mutationsList, observer) => {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                const milestonesList = document.getElementById('ohs-milestones-list');
-                if (milestonesList) {
-                    setupScrollingSidebar('ohs-milestones-list');
-                    observer.disconnect(); // Stop observing once the element is found and set up
-                    return;
+        // Add simple styling for tabs if it doesn't exist
+        if (!document.getElementById('dynamic-tab-styles')) {
+            const style = document.createElement('style');
+            style.id = 'dynamic-tab-styles';
+            style.textContent = `
+                .tab-btn {
+                    border-bottom: 2px solid transparent;
+                    padding: 0.5rem 1rem;
+                    cursor: pointer;
+                    color: #6B7280; /* gray-500 */
                 }
-            }
+                .tab-btn.active {
+                    border-bottom-color: #3B82F6; /* blue-500 */
+                    color: #1F2937; /* gray-800 */
+                    font-weight: 600;
+                }
+                .tab-content { display: none; }
+                .tab-content.active { display: block; }
+            `;
+            document.head.appendChild(style);
         }
-    });
-
-    // Start observing the placeholder for the milestones sidebar.
-    const milestonesPlaceholder = document.getElementById('sidebar-milestones-placeholder');
-    if (milestonesPlaceholder) {
-        observer.observe(milestonesPlaceholder, { childList: true, subtree: true });
     }
-
-    // Load all components when the DOM is ready.
-    loadAllComponents();
 });
-
-/**
- * Initializes the Google Translate element.
- * This function is called by the Google Translate script once it has loaded.
- */
-function googleTranslateElementInit() {
-    new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,af,zu,xh,nso,st,tn,ts,ve,ss,sn,sw,pt,fr,es,zh-CN',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-    }, 'google_translate_element');
-}
