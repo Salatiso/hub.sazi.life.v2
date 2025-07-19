@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinHelp Dashboard - The Hub</title>
+    <!-- Corrected relative path for nested directory -->
+    <link rel="stylesheet" href="../../assets/css/dashboard-styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="theme-default">
+    <!-- Standard App Container -->
+    <div id="app-container" class="flex h-screen bg-main text-primary">
+
+        <!-- Sidebar Placeholder -->
+        <div id="sidebar-placeholder"></div>
+
+        <div class="flex-1 flex flex-col">
+            <!-- Header Placeholder -->
+            <div id="header-placeholder"></div>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <!-- Original page content starts here -->
+                <header class="mb-8">
+                    <h1 class="text-3xl font-bold font-poppins">FinHelp Dashboard</h1>
+                    <p class="text-secondary">Your personal finance overview.</p>
+                </header>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Link to Assets -->
+                    <a href="./assets.html" class="card p-6 rounded-xl hover:bg-hover-bg transition-colors">
+                        <i class="fas fa-wallet text-2xl text-accent-color mb-2"></i>
+                        <h3 class="font-bold text-lg">My Assets</h3>
+                        <p class="text-secondary text-sm">Manage your properties, vehicles, and investments.</p>
+                    </a>
+                    <!-- Link to Expenses -->
+                    <a href="./expenses.html" class="card p-6 rounded-xl hover:bg-hover-bg transition-colors">
+                        <i class="fas fa-receipt text-2xl text-accent-color mb-2"></i>
+                        <h3 class="font-bold text-lg">My Expenses</h3>
+                        <p class="text-secondary text-sm">Track your spending and budget.</p>
+                    </a>
+                    <!-- Link to Tax Pack -->
+                    <a href="./tax-pack.html" class="card p-6 rounded-xl hover:bg-hover-bg transition-colors">
+                        <i class="fas fa-calculator text-2xl text-accent-color mb-2"></i>
+                        <h3 class="font-bold text-lg">Tax Pack</h3>
+                        <p class="text-secondary text-sm">Generate documents for tax season.</p>
+                    </a>
+                     <!-- Link to Public Share -->
+                    <a href="./public-share.html" class="card p-6 rounded-xl hover:bg-hover-bg transition-colors">
+                        <i class="fas fa-share-square text-2xl text-accent-color mb-2"></i>
+                        <h3 class="font-bold text-lg">Public Share</h3>
+                        <p class="text-secondary text-sm">Create a public financial profile for applications.</p>
+                    </a>
+                </div>
+                <!-- Original page content ends here -->
+            </main>
+
+            <!-- Footer Placeholder -->
+            <div id="footer-placeholder"></div>
+        </div>
+    </div>
+    
+    <!-- Corrected relative path for nested directory -->
+    <script type="module" src="../../assets/js/dashboard.js"></script>
+</body>
+</html>

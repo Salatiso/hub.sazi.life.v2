@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host a Session - Sazi Ecosystem</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Dashboard Styles -->
+    <link rel="stylesheet" href="../../assets/css/dashboard-styles.css">
+</head>
+<body class="theme-default">
+
+    <div id="app-container" class="flex h-screen bg-main text-primary">
+        
+        <!-- Sidebar Placeholder -->
+        <div id="sidebar-placeholder">
+            <!-- The sidebar will be loaded here by dashboard.js -->
+        </div>
+
+        <!-- Main content area -->
+        <div class="flex-1 flex flex-col">
+            
+            <!-- Header Placeholder -->
+            <div id="header-placeholder">
+                <!-- The header will be loaded here by dashboard.js -->
+            </div>
+
+            <!-- Scrollable main content -->
+            <main id="main-content" class="flex-1 overflow-y-auto p-8">
+                
+                <header class="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 class="text-3xl font-bold font-poppins text-primary">Host a Live Session</h1>
+                        <p class="text-secondary">Create a live training event for your community or organization.</p>
+                    </div>
+                </header>
+
+                <div class="card p-6 rounded-xl shadow-lg max-w-2xl mx-auto">
+                    <form id="host-session-form" class="space-y-6">
+                         <div>
+                            <label for="session-title" class="block text-sm font-medium text-secondary">Session Title</label>
+                            <input type="text" id="session-title" class="input-field w-full mt-1" placeholder="e.g., Live Q&A: OHS Risk Assessments">
+                        </div>
+                        <div>
+                            <label for="session-description" class="block text-sm font-medium text-secondary">Description</label>
+                            <textarea id="session-description" rows="3" class="input-field w-full mt-1" placeholder="What will this session cover?"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="session-date" class="block text-sm font-medium text-secondary">Date</label>
+                                <input type="date" id="session-date" class="input-field w-full mt-1">
+                            </div>
+                             <div>
+                                <label for="session-time" class="block text-sm font-medium text-secondary">Time</label>
+                                <input type="time" id="session-time" class="input-field w-full mt-1">
+                            </div>
+                        </div>
+                         <div>
+                            <label for="session-link" class="block text-sm font-medium text-secondary">Meeting Link (e.g., Zoom, Google Meet)</label>
+                            <input type="url" id="session-link" class="input-field w-full mt-1" placeholder="https://...">
+                        </div>
+                        <button type="submit" class="btn-primary w-full !mt-8">Create Session</button>
+                    </form>
+                </div>
+
+            </main>
+
+            <!-- Footer Placeholder -->
+            <div id="footer-placeholder">
+                <!-- The footer will be loaded here by dashboard.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Script -->
+    <script type="module" src="../../assets/js/dashboard.js"></script>
+
+</body>
+</html>

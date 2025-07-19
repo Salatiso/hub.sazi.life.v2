@@ -1,0 +1,83 @@
+/* hub.sazi.life/assets/css/header.css */
+
+header {
+    background: #007BFF;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header .logo-container {
+    text-decoration: none;
+    color: white;
+}
+
+header .logo {
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: -0.025em;
+}
+
+header .logo .help {
+    font-weight: 900;
+    color: #FF8C00;
+}
+
+header nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+header nav a {
+    color: white;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+header nav a:hover,
+header nav a.active-nav-link {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+header nav a .nav-icon {
+    font-size: 0.9em;
+}
+
+.search-language {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-language input {
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.search-language .login-button {
+    background-color: #FF8C00; /* Tailwind orange-500 */
+    color: white;
+    padding: 0.5rem 1rem; /* py-2 px-4 */
+    border-radius: 0.5rem; /* rounded-lg */
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.search-language .login-button:hover {
+    background-color: #EA580C; /* Tailwind orange-600 */
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Pages - The Hub</title>
+    <!-- Corrected relative path for nested directory -->
+    <link rel="stylesheet" href="../../assets/css/dashboard-styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="theme-default">
+    <!-- Standard App Container -->
+    <div id="app-container" class="flex h-screen bg-main text-primary">
+
+        <!-- Sidebar Placeholder -->
+        <div id="sidebar-placeholder"></div>
+
+        <div class="flex-1 flex flex-col">
+            <!-- Header Placeholder -->
+            <div id="header-placeholder"></div>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                <!-- Original page content starts here -->
+                <header class="mb-8 flex justify-between items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold font-poppins">Public Pages</h1>
+                        <p class="text-secondary">Manage your public-facing profiles and pages.</p>
+                    </div>
+                    <div>
+                        <a href="./editor.html" class="btn-primary"><i class="fas fa-plus mr-2"></i>New Page</a>
+                    </div>
+                </header>
+                <div id="public-pages-list" class="text-center text-secondary">
+                    <p>Loading your public pages...</p>
+                </div>
+                <!-- Original page content ends here -->
+            </main>
+
+            <!-- Footer Placeholder -->
+            <div id="footer-placeholder"></div>
+        </div>
+    </div>
+    
+    <!-- Corrected relative path for nested directory -->
+    <script type="module" src="../../assets/js/dashboard.js"></script>
+</body>
+</html>
