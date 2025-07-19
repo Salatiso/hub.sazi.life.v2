@@ -1,110 +1,106 @@
-// File: /assets/js/dashboard.js
-// Description: A simplified script that only loads shared components. It does NOT handle page navigation.
+// hub.sazi.life.v2/assets/js/modules.js
 
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { initTranslations, applyTranslations } from './translations-engine.js';
 
 /**
- * Loads a static HTML component into a placeholder.
- * @param {string} componentName - The name of the component file (e.g., 'sidebar').
- * @param {string} placeholderId - The ID of the element to load the component into.
+ * Loads an HTML component into a placeholder element on the page.
+ * @param {string} componentName - The name of the component file (e.g., 'header').
+ * @param {string} placeholderId - The ID of the placeholder element.
  */
 const loadComponent = async (componentName, placeholderId) => {
     const placeholder = document.getElementById(placeholderId);
-    if (!placeholder) return;
+    if (!placeholder) {
+        console.warn(`Placeholder '${placeholderId}' not found on this page.`);
+        return;
+    }
     try {
-        // Uses a root-relative path that works from any page depth.
-        const response = await fetch(`/hub.sazi.life/components/${componentName}.html`);
-        if (!response.ok) throw new Error(`Failed to load ${componentName}.`);
+        // Use a root-relative path to ensure it works from any page depth
+        const response = await fetch(`/components/${componentName}.html`);
+        if (!response.ok) throw new Error(`Failed to load ${componentName}. Status: ${response.status}`);
         placeholder.innerHTML = await response.text();
-        await applyTranslations(placeholder);
     } catch (error) {
         console.error(`Error loading component ${componentName}:`, error);
-        placeholder.innerHTML = `<p class="text-red-500">Error loading ${componentName}.</p>`;
+        placeholder.innerHTML = `<p class="text-red-500 p-4">Error: Could not load ${componentName}.</p>`;
     }
 };
 
 /**
- * Populates the header with the current user's name and avatar.
- * @param {object} user - The Firebase auth user object.
- * @param {object} userData - User data from Firestore.
+ * Populates the user-specific elements in the header.
+ * @param {object} user - The Firebase user object.
  */
-const populateUserData = (user, userData) => {
-    const userNameEl = document.getElementById('user-name');
-    const userAvatarEl = document.getElementById('user-avatar');
-    
-    if (userNameEl) userNameEl.textContent = userData.displayName || user.displayName || 'User';
-    if (userAvatarEl) userAvatarEl.src = userData.photoURL || user.photoURL || 'https://placehold.co/100x100/667eea/ffffff?text=U';
+const populateUserData = async (user) => {
+    const userDisplayName = document.getElementById('user-display-name');
+    if (userDisplayName) {
+        // Try to get display name from Auth first, then Firestore as a fallback
+        if (user.displayName) {
+            userDisplayName.textContent = user.displayName;
+        } else {
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (userDoc.exists() && userDoc.data().displayName) {
+                userDisplayName.textContent = userDoc.data().displayName;
+            } else {
+                userDisplayName.textContent = "User"; // Fallback
+            }
+        }
+    }
 };
 
-// --- Main Initialization Logic ---
+/**
+ * Initializes all event listeners for the loaded components.
+ */
+const initializeEventListeners = () => {
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userMenu = document.getElementById('user-menu');
+    const logoutBtn = document.getElementById('logout-btn');
 
+    if (userMenuButton && userMenu) {
+        userMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent click from bubbling up to the body
+            userMenu.classList.toggle('hidden');
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).catch(error => console.error('Logout Error:', error));
+        });
+    }
+    
+    // Close dropdown when clicking anywhere else on the page
+    document.body.addEventListener('click', () => {
+        userMenu?.classList.add('hidden');
+    });
+};
+
+// --- Main Execution ---
 document.addEventListener('DOMContentLoaded', () => {
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            const userData = userDoc.exists() ? userDoc.data() : {};
+            // User is signed in. Proceed to build the authenticated page.
+            console.log("User is authenticated. Loading dashboard components.");
 
-            await initTranslations(localStorage.getItem('language') || 'en');
-
-            // Load all static parts of the dashboard shell.
+            // Load all shared components in parallel for speed
             await Promise.all([
-                loadComponent('sidebar', 'sidebar-placeholder'),
                 loadComponent('header', 'header-placeholder'),
-                loadComponent('footer', 'footer-placeholder')
+                loadComponent('sidebar', 'sidebar-placeholder'),
+                // loadComponent('footer', 'footer-placeholder') // Can be added later
             ]);
-            
-            // Delay adding listeners to ensure components are loaded.
-            setTimeout(() => {
-                populateUserData(user, userData);
 
-                // Highlight the active link in the sidebar based on the current page URL.
-                const currentPath = window.location.pathname;
-                document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                    if (link.getAttribute('href') === currentPath) {
-                        link.classList.add('active-link');
-                    }
-                });
-
-                // Setup dropdowns and logout
-                const userBtn = document.getElementById('user-btn');
-                const userMenu = document.getElementById('user-menu');
-                if (userBtn) userBtn.addEventListener('click', () => userMenu.classList.toggle('hidden'));
-                
-                const logoutBtn = document.getElementById('logout-btn');
-                if (logoutBtn) {
-                    logoutBtn.addEventListener('click', () => {
-                        signOut(auth).catch(error => console.error('Logout Error:', error));
-                    });
-                }
-            }, 500);
+            // Once components are loaded, populate user data and set up interactions
+            await populateUserData(user);
+            initializeEventListeners();
 
         } else {
-            // User is signed out, redirect to the login page.
-            if (!window.location.pathname.includes('index.html')) {
-                 window.location.href = '/hub.sazi.life/index.html';
+            // User is signed out. Redirect them to the login page.
+            console.log("User is not authenticated. Redirecting to login page.");
+            // Protect the page by redirecting
+            // Check if we are already on the root/index page to avoid a redirect loop
+            if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('index.html')) {
+                 window.location.href = '/index.html';
             }
-        }
-    });
-
-     // --- Global Event Listeners for UI elements ---
-    document.body.addEventListener('click', (e) => {
-        // Handle language switching
-        const langOption = e.target.closest('.language-option');
-        if (langOption) {
-            const lang = langOption.getAttribute('data-lang');
-            localStorage.setItem('language', lang);
-            initTranslations(lang);
-        }
-
-        // Close dropdowns when clicking outside
-        if (!e.target.closest('#user-dropdown-container')) {
-            document.getElementById('user-menu')?.classList.add('hidden');
-        }
-         if (!e.target.closest('#language-dropdown-container')) {
-            document.getElementById('language-menu')?.classList.add('hidden');
         }
     });
 });

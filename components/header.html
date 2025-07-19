@@ -1,21 +1,20 @@
-<!-- hub.sazi.life/components/header.html -->
+<!-- hub.sazi.life.v2/components/header.html -->
+<header class="p-4 flex justify-between items-center">
+    <!-- Search Bar -->
+    <div class="relative">
+        <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    </div>
 
-<header>
-    <a href="index.html" class="logo-container">
-        <div class="logo">Safety<span class="help">Help</span></div>
-    </a>
-    <nav>
-        <a href="index.html" class="active-nav-link"><i class="fas fa-home nav-icon"></i>Home</a>
-        <a href="#"><i class="fas fa-book nav-icon"></i>Resources</a>
-        <a href="#"><i class="fas fa-concierge-bell nav-icon"></i>Services</a>
-        <a href="#"><i class="fas fa-users nav-icon"></i>Community</a>
-        <a href="#"><i class="fas fa-info-circle nav-icon"></i>About</a>
-        <a href="#"><i class="fas fa-envelope nav-icon"></i>Contact</a>
-        <a href="#"><i class="fas fa-sign-in-alt nav-icon"></i>SignUp / Login</a>
-    </nav>
-    <div class="search-language">
-        <input type="text" placeholder="Search...">
-        <div id="google_translate_element"></div>
-        <a href="#" class="login-button">Login</a>
+    <!-- User Menu -->
+    <div class="relative" id="user-dropdown-container">
+        <button id="user-menu-button" class="flex items-center space-x-2">
+            <span id="user-display-name" class="font-semibold text-gray-700">Loading...</span>
+            <i class="fas fa-chevron-down text-gray-500 text-sm"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+            <a href="/modules/profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Profile</a>
+            <a href="#" id="logout-btn" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Out</a>
+        </div>
     </div>
 </header>
