@@ -5,7 +5,8 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /**
- * Loads an HTML component into a placeholder element on the page.
+ * Intelligently loads an HTML component into a placeholder.
+ * It automatically determines the correct relative path to the components folder.
  * @param {string} componentName - The name of the component file (e.g., 'header').
  * @param {string} placeholderId - The ID of the placeholder element.
  */
@@ -15,9 +16,14 @@ const loadComponent = async (componentName, placeholderId) => {
         console.warn(`Placeholder '${placeholderId}' not found on this page.`);
         return;
     }
+
+    // Determine the correct base path. If the page is in a subfolder of /modules/, 
+    // it needs to go up two levels (../../). Otherwise, just one level (../).
+    const isSubdirectory = window.location.pathname.includes('/modules/') && window.location.pathname.split('/modules/')[1].includes('/');
+    const basePath = isSubdirectory ? '../../' : '../';
+
     try {
-        // Use a root-relative path to ensure it works from any page depth
-        const response = await fetch(`/components/${componentName}.html`);
+        const response = await fetch(`${basePath}components/${componentName}.html`);
         if (!response.ok) throw new Error(`Failed to load ${componentName}. Status: ${response.status}`);
         placeholder.innerHTML = await response.text();
     } catch (error) {
@@ -33,17 +39,12 @@ const loadComponent = async (componentName, placeholderId) => {
 const populateUserData = async (user) => {
     const userDisplayName = document.getElementById('user-display-name');
     if (userDisplayName) {
-        // Try to get display name from Auth first, then Firestore as a fallback
         if (user.displayName) {
             userDisplayName.textContent = user.displayName;
         } else {
             const userDocRef = doc(db, "users", user.uid);
             const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists() && userDoc.data().displayName) {
-                userDisplayName.textContent = userDoc.data().displayName;
-            } else {
-                userDisplayName.textContent = "User"; // Fallback
-            }
+            userDisplayName.textContent = (userDoc.exists() && userDoc.data().displayName) ? userDoc.data().displayName : "User";
         }
     }
 };
@@ -58,7 +59,7 @@ const initializeEventListeners = () => {
 
     if (userMenuButton && userMenu) {
         userMenuButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // Prevent click from bubbling up to the body
+            e.stopPropagation();
             userMenu.classList.toggle('hidden');
         });
     }
@@ -69,38 +70,25 @@ const initializeEventListeners = () => {
         });
     }
     
-    // Close dropdown when clicking anywhere else on the page
     document.body.addEventListener('click', () => {
         userMenu?.classList.add('hidden');
     });
 };
 
 // --- Main Execution ---
-document.addEventListener('DOMContentLoaded', () => {
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            // User is signed in. Proceed to build the authenticated page.
-            console.log("User is authenticated. Loading dashboard components.");
-
-            // Load all shared components in parallel for speed
-            await Promise.all([
-                loadComponent('header', 'header-placeholder'),
-                loadComponent('sidebar', 'sidebar-placeholder'),
-                // loadComponent('footer', 'footer-placeholder') // Can be added later
-            ]);
-
-            // Once components are loaded, populate user data and set up interactions
-            await populateUserData(user);
-            initializeEventListeners();
-
-        } else {
-            // User is signed out. Redirect them to the login page.
-            console.log("User is not authenticated. Redirecting to login page.");
-            // Protect the page by redirecting
-            // Check if we are already on the root/index page to avoid a redirect loop
-            if (!window.location.pathname.endsWith('/') && !window.location.pathname.endsWith('index.html')) {
-                 window.location.href = '/index.html';
-            }
-        }
-    });
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        console.log("User is authenticated. Loading dashboard components.");
+        await Promise.all([
+            loadComponent('header', 'header-placeholder'),
+            loadComponent('sidebar', 'sidebar-placeholder'),
+            loadComponent('footer', 'footer-placeholder')
+        ]);
+        await populateUserData(user);
+        initializeEventListeners();
+    } else {
+        console.log("User is not authenticated. Redirecting to login.");
+        // Use a root-relative path for redirection to work from any depth
+        window.location.href = '/login.html';
+    }
 });
