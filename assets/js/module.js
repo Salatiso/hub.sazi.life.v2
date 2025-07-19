@@ -1,17 +1,15 @@
 // hub.sazi.life.v2/assets/js/module.js
 
-// Note: This script assumes it is being loaded from a page inside the /modules/ directory.
-// It is the central engine for all authenticated pages.
+// Note: This script is the central engine for all authenticated pages.
 
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /**
- * Intelligently loads an HTML component into a placeholder.
- * It determines the correct relative path to the /components/ folder based on the current page's URL.
- * @param {string} componentName - The name of the component file (e.g., 'header', 'sidebar').
- * @param {string} placeholderId - The ID of the placeholder element in the HTML.
+ * Loads an HTML component into a placeholder, calculating the correct relative path.
+ * @param {string} componentName - The name of the component file (e.g., 'header').
+ * @param {string} placeholderId - The ID of the placeholder element.
  */
 const loadComponent = async (componentName, placeholderId) => {
     const placeholder = document.getElementById(placeholderId);
@@ -20,55 +18,39 @@ const loadComponent = async (componentName, placeholderId) => {
         return;
     }
 
-    // NEW, MORE ROBUST LOGIC: This correctly calculates the path depth
-    // for pages inside /modules/ and its subdirectories.
     const path = window.location.pathname;
     const modulesIndex = path.indexOf('/modules/');
-
     if (modulesIndex === -1) {
-        console.error("This script is not running from within the /modules/ directory. Cannot determine component path.");
-        placeholder.innerHTML = `<div class="p-4 text-center text-red-500">Error: Script path issue.</div>`;
+        console.error("This script is not in /modules/. Cannot determine path.");
+        placeholder.innerHTML = `<div class="p-4 text-red-500">Error: Script path issue.</div>`;
         return;
     }
-
-    // Get the part of the path *after* /modules/
     const pathAfterModules = path.substring(modulesIndex + '/modules/'.length);
-    
-    // Count the number of slashes to determine directory depth
     const depth = (pathAfterModules.match(/\//g) || []).length;
-    
-    // The base path needs to go up one level for 'modules' itself, plus one for each level of depth
     const basePath = '../'.repeat(depth + 1);
-    
     const componentUrl = `${basePath}components/${componentName}.html`;
-    console.log(`Attempting to load component from: ${componentUrl}`);
 
     try {
         const response = await fetch(componentUrl);
         if (!response.ok) {
-            throw new Error(`Network response was not ok. Status: ${response.status} for ${componentUrl}`);
+            throw new Error(`Network response was not ok for ${componentUrl}`);
         }
         const data = await response.text();
         placeholder.innerHTML = data;
     } catch (error) {
         console.error(`Failed to load component '${componentName}':`, error);
-        placeholder.innerHTML = `<div class="p-4 text-center text-red-500">Error loading ${componentName}.</div>`;
+        placeholder.innerHTML = `<div class="p-4 text-red-500">Error loading ${componentName}.</div>`;
     }
 };
 
 /**
- * Fetches user data from Firestore and populates the UI.
+ * Populates the UI with user data from Firestore.
  * @param {object} user - The Firebase authenticated user object.
  */
 const populateUserData = async (user) => {
-    // Wait for a moment to ensure the header component is loaded
-    await new Promise(resolve => setTimeout(resolve, 100)); 
-    
+    await new Promise(resolve => setTimeout(resolve, 100)); // Wait for header to load
     const displayNameEl = document.getElementById('user-display-name');
-    if (!displayNameEl) {
-        console.warn("Could not find 'user-display-name' element in the header.");
-        return;
-    }
+    if (!displayNameEl) return;
 
     if (user.displayName) {
         displayNameEl.textContent = user.displayName;
@@ -76,13 +58,8 @@ const populateUserData = async (user) => {
         displayNameEl.textContent = 'Guest User';
     } else {
         try {
-            const userDocRef = doc(db, "users", user.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists() && userDoc.data().name) {
-                displayNameEl.textContent = userDoc.data().name;
-            } else {
-                displayNameEl.textContent = user.email || "User";
-            }
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            displayNameEl.textContent = (userDoc.exists() && userDoc.data().name) ? userDoc.data().name : (user.email || "User");
         } catch (error) {
             console.error("Error fetching user data:", error);
             displayNameEl.textContent = "User";
@@ -91,7 +68,42 @@ const populateUserData = async (user) => {
 };
 
 /**
- * Initializes all necessary event listeners for the loaded components.
+ * NEW: Fixes root-relative links to work correctly in a subdirectory (like on GitHub Pages).
+ * It prepends the repository name to the path.
+ * e.g., /modules/profile.html -> /hub.salatiso.com/modules/profile.html
+ */
+const fixAllLinks = () => {
+    const path = window.location.pathname;
+    // The base path is the part of the URL before '/modules/'.
+    const modulesIndex = path.indexOf('/modules/');
+    
+    // If not found, or if it's at the root, no fixing is needed.
+    if (modulesIndex <= 0) {
+        console.log("Running at root. No link fixing needed.");
+        return;
+    }
+    
+    const repoBasePath = path.substring(0, modulesIndex);
+    console.log(`Fixing links with base path: ${repoBasePath}`);
+
+    // Select all links in the document.
+    document.querySelectorAll('a').forEach(link => {
+        const href = link.getAttribute('href');
+        
+        // Check if it's a root-relative link (starts with /) that needs fixing.
+        if (href && href.startsWith('/') && !href.startsWith('//')) {
+            // Check if it's already been fixed to prevent double-prepending.
+            if (!href.startsWith(repoBasePath)) {
+                const newHref = repoBasePath + href;
+                console.log(`Correcting link: ${href} -> ${newHref}`);
+                link.setAttribute('href', newHref);
+            }
+        }
+    });
+};
+
+/**
+ * Initializes all necessary event listeners and performs post-load adjustments.
  */
 const initializeEventListeners = () => {
     const userMenuButton = document.getElementById('user-menu-button');
@@ -117,10 +129,8 @@ const initializeEventListeners = () => {
         }
     });
 
-    const overviewLink = document.querySelector('#sidebar-placeholder a[href="/index-modules.html"]');
-    if (overviewLink) {
-        overviewLink.href = '/modules/index-modules.html';
-    }
+    // Run the link fixer after components are on the page.
+    fixAllLinks();
 };
 
 // --- Main Execution Flow ---
@@ -140,7 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else {
             console.log("User is not authenticated. Redirecting to login page.");
-            window.location.href = '/login.html';
+            // This needs to be a root-relative path to work from any page depth.
+            // The link fixer will correct this redirect if needed.
+            let loginUrl = '/login.html';
+            const path = window.location.pathname;
+            const modulesIndex = path.indexOf('/modules/');
+            if (modulesIndex > 0) {
+                const repoBasePath = path.substring(0, modulesIndex);
+                loginUrl = repoBasePath + loginUrl;
+            }
+            window.location.href = loginUrl;
         }
     });
 });
