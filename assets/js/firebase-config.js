@@ -1,12 +1,12 @@
-// /assets/js/firebase-config.js
+// hub.sazi.life.v2/assets/js/firebase-config.js
 
-// Firebase v10 modular SDK
+// Import the necessary functions from the Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// Your web app's Firebase configuration
+// Your web app's Firebase configuration from the provided file
 const firebaseConfig = {
   apiKey: "AIzaSyD_pRVkeVzciCPowxsj44NRVlbyZvFPueI",
   authDomain: "lifecv-d2724.firebaseapp.com",
@@ -19,8 +19,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
-export { app, analytics, auth, db };
+// Initialize and export Firebase services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
