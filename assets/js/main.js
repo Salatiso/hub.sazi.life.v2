@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const loadComponent = (componentPath, placeholderId) => {
         const placeholder = document.getElementById(placeholderId);
         if (!placeholder) {
-            // This is now expected on pages that don't have this placeholder.
-            // console.log(`Placeholder '${placeholderId}' not found on this page. Skipping component load.`);
+            // This is now an expected behavior, not an error.
             return;
         }
 
@@ -26,14 +25,14 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(data => {
                 placeholder.innerHTML = data;
             })
-            .catch(error => console.error('Error loading component:', error));
+            .catch(error => {
+                console.error('Error loading component:', error);
+                placeholder.innerHTML = `<div class="text-red-500 text-xs text-center">Error: ${error.message}</div>`;
+            });
     };
 
     // --- Component Loading ---
-    // These will now only run if their respective placeholders are on the current page.
     loadComponent('components/assessment.html', 'assessment-placeholder');
-    // Add future public components here, e.g., loadComponent('components/theme-switcher.html', 'switchers-placeholder');
-
 
     // --- Tab Switching Logic for the Login Page ---
     const tabsContainer = document.getElementById('auth-assessment-tabs');
