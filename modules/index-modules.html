@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- CORRECTED PATHS: All paths now correctly point from the /modules/ directory -->
+    <!-- Paths to CSS files -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/modules.css">
     
@@ -17,25 +17,22 @@
 <body class="bg-gray-50">
 
     <div id="app-container" class="flex h-screen">
-        <!-- The sidebar component will be loaded here by modules.js -->
+        <!-- Sidebar placeholder -->
         <div id="sidebar-placeholder" class="w-64 bg-white shadow-md">
-            <!-- Placeholder content for sidebar -->
             <div class="p-4 text-center text-gray-500">Loading Sidebar...</div>
         </div>
 
         <div class="flex-1 flex flex-col">
-            <!-- The header component will be loaded here by modules.js -->
+            <!-- Header placeholder -->
             <div id="header-placeholder" class="bg-white shadow-sm">
-                 <!-- Placeholder content for header -->
                 <div class="p-4 text-gray-500">Loading Header...</div>
             </div>
 
-            <!-- Main content for the dashboard overview -->
+            <!-- Main content -->
             <main class="flex-1 p-6 md:p-8 overflow-y-auto">
                 <h1 class="text-3xl font-bold text-gray-800 font-poppins">Welcome to The Hub</h1>
                 <p class="mt-2 text-gray-600">This is your digital homestead. Select a module from the sidebar to get started.</p>
                 
-                <!-- Example content cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                     <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
                         <h2 class="text-xl font-bold text-gray-800 font-roboto-slab">Quick Actions</h2>
@@ -56,16 +53,15 @@
                 </div>
             </main>
 
-            <!-- The footer component will be loaded here by modules.js -->
+            <!-- Footer placeholder -->
             <div id="footer-placeholder">
-                 <!-- Placeholder content for footer -->
                  <div class="p-4 text-center text-xs text-gray-400">Loading Footer...</div>
             </div>
         </div>
     </div>
 
-    <!-- The single, corrected script to build the authenticated page -->
-    <script type="module" src="../assets/js/modules.js"></script>
+    <!-- SCRIPT FIX: Changed 'modules.js' to 'module.js' to match your actual file name. -->
+    <script type="module" src="../assets/js/module.js"></script>
 
 </body>
 </html>
